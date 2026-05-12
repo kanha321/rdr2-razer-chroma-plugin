@@ -49,6 +49,12 @@ public:
     // Check if a valid session exists
     bool IsReady() const;
 
+    // Send request to the session endpoint (used by ChromaRenderer)
+    std::string SendSessionRequest(
+        const std::string& subpath,
+        const std::string& method,
+        const std::string& body = ""
+    );
 private:
     // Session state
     std::string m_sessionUri;     // Full URI returned by Chroma SDK (e.g., "http://localhost:54235/razer/chromasdk/12345")
@@ -76,12 +82,7 @@ private:
         const std::string& body = ""
     );
 
-    // Convenience: send request to the session endpoint
-    std::string SendSessionRequest(
-        const std::string& subpath,
-        const std::string& method,
-        const std::string& body = ""
-    );
+
 
     // Prevent copying
     ChromaClient(const ChromaClient&) = delete;

@@ -142,17 +142,52 @@
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\EventDetector.cpp" />
     <ClCompile Include="src\ChromaClient.cpp" />
+    <!-- Phase 2: Core -->
+    <ClCompile Include="src\core\Framebuffer.cpp" />
+    <!-- Phase 2: Events -->
+    <ClCompile Include="src\events\EventBus.cpp" />
+    <ClCompile Include="src\events\GameStateMachine.cpp" />
+    <!-- Phase 2: Effects -->
+    <ClCompile Include="src\effects\EffectRegistry.cpp" />
+    <!-- Phase 2: Render -->
+    <ClCompile Include="src\render\Compositor.cpp" />
+    <ClCompile Include="src\render\ChromaRenderer.cpp" />
   </ItemGroup>
 
   <!-- Header files -->
   <ItemGroup>
     <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\JsonConfig.h" />
+    <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\GameState.h" />
     <ClInclude Include="src\EventDetector.h" />
     <ClInclude Include="src\ChromaClient.h" />
     <ClInclude Include="include\ScriptHookRDR2\main.h" />
     <ClInclude Include="include\ScriptHookRDR2\types.h" />
     <ClInclude Include="include\ScriptHookRDR2\natives.h" />
+    <!-- Phase 2: Core -->
+    <ClInclude Include="src\core\Color.h" />
+    <ClInclude Include="src\core\Easing.h" />
+    <ClInclude Include="src\core\AnimationTimer.h" />
+    <ClInclude Include="src\core\Framebuffer.h" />
+    <!-- Phase 2: Events -->
+    <ClInclude Include="src\events\EventTypes.h" />
+    <ClInclude Include="src\events\EventBus.h" />
+    <ClInclude Include="src\events\GameStateMachine.h" />
+    <!-- Phase 2: Effects -->
+    <ClInclude Include="src\effects\Effect.h" />
+    <ClInclude Include="src\effects\StaticEffect.h" />
+    <ClInclude Include="src\effects\PulseEffect.h" />
+    <ClInclude Include="src\effects\FlashEffect.h" />
+    <ClInclude Include="src\effects\BreathingEffect.h" />
+    <ClInclude Include="src\effects\TransitionEffect.h" />
+    <ClInclude Include="src\effects\RippleEffect.h" />
+    <ClInclude Include="src\effects\EffectRegistry.h" />
+    <!-- Phase 2: Render -->
+    <ClInclude Include="src\render\Layer.h" />
+    <ClInclude Include="src\render\LayerStack.h" />
+    <ClInclude Include="src\render\Compositor.h" />
+    <ClInclude Include="src\render\ChromaRenderer.h" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

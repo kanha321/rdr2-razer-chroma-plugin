@@ -1,0 +1,35 @@
+{
+    "timing": {
+        "render_interval_ms": 33,
+        "heartbeat_interval_ms": 1000,
+        "init_retry_interval_ms": 5000,
+        "warmup_frames": 30,
+        "debug_log_interval_ms": 5000
+    },
+    "game": {
+        "low_health_threshold": 0.25,
+        "combat_debounce_ms": 5000
+    },
+    "effects": {
+        "pulse": {
+            "frequency_hz": 2.0,
+            "min_brightness": 0.3
+        },
+        "breathing": {
+            "cycle_seconds": 3.0,
+            "min_brightness": 0.4
+        },
+        "flash": {
+            "duration_seconds": 0.3
+        },
+        "transition": {
+            "duration_seconds": 0.5
+        }
+    },
+    "colors": {
+        "idle":     { "r": 64,  "g": 64,  "b": 64  },
+        "wanted":   { "r": 255, "g": 0,   "b": 0   },
+        "low_health": { "r": 255, "g": 128, "b": 0  },
+        "dead_eye": { "r": 128, "g": 85,  "b": 45  }
+    }
+}
