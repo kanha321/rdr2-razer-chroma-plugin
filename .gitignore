@@ -1,0 +1,32 @@
+# Build outputs
+build/
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.asi
+*.dll
+*.lib
+!lib/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+ipch/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# References (cloned repos, not part of the project)
+references/
