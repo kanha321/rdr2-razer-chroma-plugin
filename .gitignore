@@ -14,6 +14,7 @@ Release/
 
 # Visual Studio
 .vs/
+.vscode/
 *.user
 *.suo
 *.ncb

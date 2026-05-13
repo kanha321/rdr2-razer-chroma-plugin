@@ -170,24 +170,41 @@
     <ClInclude Include="src\core\Easing.h" />
     <ClInclude Include="src\core\AnimationTimer.h" />
     <ClInclude Include="src\core\Framebuffer.h" />
+    <ClInclude Include="src\core\SpatialField.h" />
     <!-- Phase 2: Events -->
     <ClInclude Include="src\events\EventTypes.h" />
     <ClInclude Include="src\events\EventBus.h" />
     <ClInclude Include="src\events\GameStateMachine.h" />
+    <ClInclude Include="src\events\HighLevelState.h" />
+    <ClInclude Include="src\events\IEventBus.h" />
+    <ClInclude Include="src\events\IStateMachine.h" />
     <!-- Phase 2: Effects -->
     <ClInclude Include="src\effects\Effect.h" />
+    <ClInclude Include="src\effects\EffectDescriptor.h" />
     <ClInclude Include="src\effects\StaticEffect.h" />
     <ClInclude Include="src\effects\PulseEffect.h" />
     <ClInclude Include="src\effects\FlashEffect.h" />
     <ClInclude Include="src\effects\BreathingEffect.h" />
     <ClInclude Include="src\effects\TransitionEffect.h" />
     <ClInclude Include="src\effects\RippleEffect.h" />
+    <ClInclude Include="src\effects\VignetteEffect.h" />
+    <ClInclude Include="src\effects\WaveEffect.h" />
     <ClInclude Include="src\effects\EffectRegistry.h" />
     <!-- Phase 2: Render -->
     <ClInclude Include="src\render\Layer.h" />
     <ClInclude Include="src\render\LayerStack.h" />
     <ClInclude Include="src\render\Compositor.h" />
     <ClInclude Include="src\render\ChromaRenderer.h" />
+    <!-- Phase 3: Transitions -->
+    <ClInclude Include="src\transitions\TransitionPolicy.h" />
+    <ClInclude Include="src\transitions\TransitionManager.h" />
+    <!-- Phase 3: Animation -->
+    <ClInclude Include="src\animation\TimelineComposer.h" />
+    <!-- Runtime abstractions -->
+    <ClInclude Include="src\runtime\IGameStateReader.h" />
+    <ClInclude Include="src\runtime\DefaultGameStateReader.h" />
+    <ClInclude Include="src\runtime\IChromaSession.h" />
+    <ClInclude Include="src\runtime\IFrameRenderer.h" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

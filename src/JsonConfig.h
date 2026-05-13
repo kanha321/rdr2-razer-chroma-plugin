@@ -44,6 +44,14 @@ struct JsonConfig
     Color colorLowHealth = Color(255, 128, 0);
     Color colorDeadEye  = Color(128, 85, 45);
 
+    // Transition durations (Phase 3) — in seconds
+    float baseFadeInSec     = 0.5f;
+    float baseFadeOutSec    = 0.5f;
+    float combatFadeInSec   = 0.2f;
+    float combatFadeOutSec  = 0.3f;
+    float criticalFadeInSec = 0.5f;
+    float criticalFadeOutSec = 0.3f;
+
     // Singleton access
     static JsonConfig& Instance()
     {
@@ -121,6 +129,18 @@ struct JsonConfig
                 }
             }
 
+            // Transitions (Phase 3)
+            if (j.contains("transitions"))
+            {
+                auto& tr = j["transitions"];
+                if (tr.contains("base_fade_in_ms"))     baseFadeInSec = tr["base_fade_in_ms"].get<float>() / 1000.0f;
+                if (tr.contains("base_fade_out_ms"))    baseFadeOutSec = tr["base_fade_out_ms"].get<float>() / 1000.0f;
+                if (tr.contains("combat_fade_in_ms"))   combatFadeInSec = tr["combat_fade_in_ms"].get<float>() / 1000.0f;
+                if (tr.contains("combat_fade_out_ms"))  combatFadeOutSec = tr["combat_fade_out_ms"].get<float>() / 1000.0f;
+                if (tr.contains("critical_fade_in_ms")) criticalFadeInSec = tr["critical_fade_in_ms"].get<float>() / 1000.0f;
+                if (tr.contains("critical_fade_out_ms")) criticalFadeOutSec = tr["critical_fade_out_ms"].get<float>() / 1000.0f;
+            }
+
             // Colors
             if (j.contains("colors"))
             {
@@ -144,6 +164,9 @@ struct JsonConfig
             LOG_INFO("  pulseFreq=" + std::to_string(pulseFrequencyHz) + "Hz");
             LOG_INFO("  breathingCycle=" + std::to_string(breathingCycleSeconds) + "s");
             LOG_INFO("  combatDebounce=" + std::to_string(combatDebounceMs) + "ms");
+            LOG_INFO("  transitions: base=" + std::to_string(baseFadeInSec) +
+                     "s, combat=" + std::to_string(combatFadeInSec) +
+                     "s, critical=" + std::to_string(criticalFadeInSec) + "s");
         }
         catch (const json::exception& e)
         {

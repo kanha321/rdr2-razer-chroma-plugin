@@ -26,10 +26,18 @@
             "duration_seconds": 0.5
         }
     },
+    "transitions": {
+        "base_fade_in_ms": 500,
+        "base_fade_out_ms": 500,
+        "combat_fade_in_ms": 200,
+        "combat_fade_out_ms": 300,
+        "critical_fade_in_ms": 500,
+        "critical_fade_out_ms": 300
+    },
     "colors": {
-        "idle":     { "r": 64,  "g": 64,  "b": 64  },
-        "wanted":   { "r": 255, "g": 0,   "b": 0   },
-        "low_health": { "r": 255, "g": 128, "b": 0  },
-        "dead_eye": { "r": 128, "g": 85,  "b": 45  }
+        "idle":       { "r": 64,  "g": 64,  "b": 64  },
+        "wanted":     { "r": 255, "g": 0,   "b": 0   },
+        "low_health": { "r": 255, "g": 128, "b": 0   },
+        "dead_eye":   { "r": 128, "g": 85,  "b": 45  }
     }
 }

@@ -22,6 +22,7 @@ public:
         m_layers.emplace_back("AMBIENT",  10, BlendMode::ALPHA_BLEND);
         m_layers.emplace_back("WEATHER",  20, BlendMode::ALPHA_BLEND);
         m_layers.emplace_back("COMBAT",   30, BlendMode::REPLACE);
+        m_layers.emplace_back("FX",       35, BlendMode::ADD);        // Phase 3: transient choreography (ripples, waves)
         m_layers.emplace_back("CRITICAL", 40, BlendMode::REPLACE);
         m_layers.emplace_back("DEBUG",    50, BlendMode::REPLACE);
 

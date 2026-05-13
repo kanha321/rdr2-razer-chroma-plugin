@@ -1,5 +1,8 @@
 /*
- * EffectRegistry.cpp — Declarative event-to-effect mapping implementation
+ * EffectRegistry.cpp — Routes events through TransitionManager (Phase 3)
+ *
+ * Instead of instant delete/create, uses TransitionManager for
+ * smooth crossfade transitions between effects.
  */
 
 #include "EffectRegistry.h"
@@ -15,18 +18,17 @@ void EffectRegistry::Register(EventType eventType, const std::string& layerName,
              " -> " + layerName + " (" + factoryDesc + ")");
 }
 
-void EffectRegistry::BindToEventBus(EventBus& bus, LayerStack& layers)
+void EffectRegistry::BindToEventBus(IEventBus& bus, LayerStack& layers, TransitionManager& transitionMgr)
 {
-    // Subscribe to ALL events — the registry filters by its mapping table
-    bus.SubscribeAll([this, &layers](const GameEventData& data) {
-        this->OnEvent(data, layers);
+    bus.SubscribeAll([this, &layers, &transitionMgr](const GameEventData& data) {
+        this->OnEvent(data, layers, transitionMgr);
     });
 
     LOG_INFO("EffectRegistry: Bound to EventBus with " +
-             std::to_string(m_mappings.size()) + " mappings");
+             std::to_string(m_mappings.size()) + " mappings (transition-aware)");
 }
 
-void EffectRegistry::OnEvent(const GameEventData& data, LayerStack& layers)
+void EffectRegistry::OnEvent(const GameEventData& data, LayerStack& layers, TransitionManager& transitionMgr)
 {
     for (const auto& mapping : m_mappings)
     {
@@ -40,35 +42,27 @@ void EffectRegistry::OnEvent(const GameEventData& data, LayerStack& layers)
             continue;
         }
 
-        // Stop current effect on this layer
-        if (layer->activeEffect)
-        {
-            LOG_INFO("EffectRegistry: Stopping " + std::string(layer->activeEffect->GetName()) +
-                     " on " + mapping.layerName);
-            layer->activeEffect->Stop();
-            delete layer->activeEffect;
-            layer->activeEffect = nullptr;
-        }
-
-        // Activate new effect (if factory provided)
         if (mapping.factory)
         {
+            // Create new effect and transition to it
             Effect* newEffect = mapping.factory();
             if (newEffect)
             {
-                newEffect->Start();
-                layer->activeEffect = newEffect;
-                LOG_INFO("EffectRegistry: Activated " + std::string(newEffect->GetName()) +
+                LOG_INFO("EffectRegistry: Transitioning to " +
+                         std::string(newEffect->GetName()) +
                          " on " + mapping.layerName +
                          " (event=" + std::string(EventTypeName(data.type)) + ")");
+
+                transitionMgr.RequestTransition(layer, newEffect);
             }
         }
         else
         {
-            // nullptr factory = clear the layer
-            layer->framebuffer.Clear();
-            LOG_INFO("EffectRegistry: Cleared " + mapping.layerName +
+            // nullptr factory = clear the layer with fade-out
+            LOG_INFO("EffectRegistry: Clearing " + mapping.layerName +
                      " (event=" + std::string(EventTypeName(data.type)) + ")");
+
+            transitionMgr.RequestTransition(layer, nullptr);
         }
     }
 }

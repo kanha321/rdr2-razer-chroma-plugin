@@ -1,20 +1,20 @@
 /*
- * RippleEffect.h — Expanding ring propagation animation
+ * RippleEffect.h — Expanding ring propagation animation (Phase 3)
  *
- * Expands a colored ring from the center of the keyboard outward.
- * The ring has configurable width and speed.
- * Finishes when the ring has passed beyond all keys.
+ * Now uses SpatialField for distance/ring calculations.
+ * Supports configurable origin, distance function, and falloff.
  *
  * Parameters:
  *   - color: ripple color
- *   - speed: expansion speed (columns per second)
- *   - width: ring thickness (in columns)
+ *   - speed: expansion speed (units per second)
+ *   - width: ring thickness
  *   - bgColor: background color behind the ripple
  */
 
 #pragma once
 
 #include "Effect.h"
+#include "../core/SpatialField.h"
 #include <cmath>
 
 class RippleEffect : public Effect
@@ -25,51 +25,38 @@ public:
     float speed;
     float width;
     int priority;
+    SpatialField field;
 
     RippleEffect(const Color& c, float spd = 15.0f, float w = 3.0f,
                  const Color& bg = Color::Black(), int prio = 30)
         : color(c), bgColor(bg), speed(spd), width(w), priority(prio)
-        , m_elapsed(0.0f) {}
+    {
+        field.maxRadius = SpatialField::MaxKeyboardDistance();
+    }
 
     void Start() override
     {
         isActive = true;
-        m_elapsed = 0.0f;
+        field.radius = 0.0f;
     }
 
     void Stop() override { isActive = false; }
 
     void Update(float deltaTime) override
     {
-        m_elapsed += deltaTime;
+        field.Expand(speed, deltaTime);
     }
 
     void Render(Framebuffer& target) override
     {
-        // Center of keyboard
-        float centerRow = Framebuffer::ROWS / 2.0f;
-        float centerCol = Framebuffer::COLS / 2.0f;
-
-        // Current ripple radius (expands outward)
-        float radius = m_elapsed * speed;
-
         for (int r = 0; r < Framebuffer::ROWS; r++)
         {
             for (int c = 0; c < Framebuffer::COLS; c++)
             {
-                // Distance from center (normalize rows to match column scale)
-                float dr = (r - centerRow) * 2.0f;  // Scale rows (keyboard is wider than tall)
-                float dc = static_cast<float>(c) - centerCol;
-                float dist = sqrtf(dr * dr + dc * dc);
-
-                // Is this pixel within the ring?
-                float ringDist = fabsf(dist - radius);
-
-                if (ringDist < width)
+                float intensity = field.RingIntensity(r, c, width);
+                if (intensity > 0.0f)
                 {
-                    // Fade based on distance from ring center
-                    float fade = 1.0f - (ringDist / width);
-                    Color pixelColor = Color::Lerp(bgColor, color, fade);
+                    Color pixelColor = Color::Lerp(bgColor, color, intensity);
                     target.SetPixel(r, c, pixelColor);
                 }
                 else
@@ -85,14 +72,11 @@ public:
 
     bool IsFinished() const override
     {
-        // Done when ring has passed beyond all keys
-        float maxDist = sqrtf(static_cast<float>(
-            Framebuffer::ROWS * Framebuffer::ROWS * 4 +
-            Framebuffer::COLS * Framebuffer::COLS));
-        float radius = m_elapsed * speed;
-        return radius > (maxDist + width);
+        return field.IsExpanded();
     }
 
-private:
-    float m_elapsed;
+    EffectDescriptor GetDescriptor() const override
+    {
+        return { "RippleEffect", true, true, true, BlendMode::ADD, 0.0f, 0.0f };
+    }
 };

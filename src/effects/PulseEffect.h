@@ -53,7 +53,12 @@ public:
 
     const char* GetName() const override { return "PulseEffect"; }
     int GetPriority() const override { return priority; }
-    bool IsFinished() const override { return false; }  // Loops forever
+    bool IsFinished() const override { return false; }
+
+    EffectDescriptor GetDescriptor() const override
+    {
+        return { "PulseEffect", true, false, true, BlendMode::REPLACE, 200.0f, 300.0f };
+    }
 
 private:
     float m_elapsed;

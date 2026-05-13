@@ -11,7 +11,7 @@
 
 using json = nlohmann::json;
 
-ChromaRenderer::ChromaRenderer(ChromaClient& client)
+ChromaRenderer::ChromaRenderer(IChromaSession& client)
     : m_client(client)
     , m_hasLastFrame(false)
     , m_framesSent(0)

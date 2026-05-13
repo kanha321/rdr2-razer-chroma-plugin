@@ -71,7 +71,12 @@ public:
 
     const char* GetName() const override { return "BreathingEffect"; }
     int GetPriority() const override { return priority; }
-    bool IsFinished() const override { return false; }  // Loops forever
+    bool IsFinished() const override { return false; }
+
+    EffectDescriptor GetDescriptor() const override
+    {
+        return { "BreathingEffect", true, false, true, BlendMode::REPLACE, 500.0f, 300.0f };
+    }
 
 private:
     float m_elapsed;

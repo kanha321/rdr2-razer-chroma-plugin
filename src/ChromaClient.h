@@ -20,8 +20,9 @@
 #include <string>
 #include <windows.h>
 #include <winhttp.h>
+#include "runtime/IChromaSession.h"
 
-class ChromaClient
+class ChromaClient : public IChromaSession
 {
 public:
     ChromaClient();
@@ -30,31 +31,31 @@ public:
     // Register a new Chroma session with Razer Synapse
     // POST http://localhost:54235/razer/chromasdk
     // Returns true if session was created successfully
-    bool Initialize();
+    bool Initialize() override;
 
     // Send heartbeat to keep session alive
     // PUT {session_uri}/heartbeat
     // Only sends if enough time has elapsed (heartbeat interval guard)
-    void Heartbeat();
+    void Heartbeat() override;
 
     // Set entire keyboard to a static BGR color
     // PUT {session_uri}/keyboard
     // Body: {"effect":"CHROMA_STATIC","param":{"color": bgrColor}}
-    bool SetKeyboardColor(int bgrColor);
+    bool SetKeyboardColor(int bgrColor) override;
 
     // Deregister the Chroma session
     // DELETE {session_uri}
-    void Shutdown();
+    void Shutdown() override;
 
     // Check if a valid session exists
-    bool IsReady() const;
+    bool IsReady() const override;
 
     // Send request to the session endpoint (used by ChromaRenderer)
     std::string SendSessionRequest(
         const std::string& subpath,
         const std::string& method,
         const std::string& body = ""
-    );
+    ) override;
 private:
     // Session state
     std::string m_sessionUri;     // Full URI returned by Chroma SDK (e.g., "http://localhost:54235/razer/chromasdk/12345")

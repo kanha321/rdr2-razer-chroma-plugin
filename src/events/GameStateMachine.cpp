@@ -16,7 +16,7 @@ GameStateMachine::GameStateMachine()
     LOG_INFO("GameStateMachine: Initialized (state=IDLE)");
 }
 
-void GameStateMachine::Update(const GameState& state, EventBus& bus)
+void GameStateMachine::Update(const GameState& state, IEventBus& bus)
 {
     // Player not valid → can't determine state
     if (!state.isPlayerValid)

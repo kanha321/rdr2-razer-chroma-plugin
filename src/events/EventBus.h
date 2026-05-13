@@ -8,30 +8,29 @@
 
 #pragma once
 
-#include "EventTypes.h"
+#include "IEventBus.h"
 #include <vector>
-#include <functional>
 
-class EventBus
+class EventBus : public IEventBus
 {
 public:
     // Callback type: receives event data
-    using Callback = std::function<void(const GameEventData&)>;
+    using Callback = IEventBus::Callback;
 
     // Subscribe to a specific event type
-    void Subscribe(EventType type, Callback callback);
+    void Subscribe(EventType type, Callback callback) override;
 
     // Subscribe to ALL events (used by EffectRegistry)
-    void SubscribeAll(Callback callback);
+    void SubscribeAll(Callback callback) override;
 
     // Emit an event (queued for batch processing)
-    void Emit(EventType type, float value = 0.0f);
+    void Emit(EventType type, float value = 0.0f) override;
 
     // Process all queued events — call once per frame
-    void ProcessQueue();
+    void ProcessQueue() override;
 
     // Get count of events processed this frame (for debug logging)
-    int GetLastProcessedCount() const { return m_lastProcessedCount; }
+    int GetLastProcessedCount() const override { return m_lastProcessedCount; }
 
 private:
     struct Subscriber

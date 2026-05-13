@@ -10,24 +10,24 @@
 
 #pragma once
 
-#include "../core/Framebuffer.h"
-#include "../ChromaClient.h"
+#include "../runtime/IFrameRenderer.h"
+#include "../runtime/IChromaSession.h"
 
-class ChromaRenderer
+class ChromaRenderer : public IFrameRenderer
 {
 public:
-    ChromaRenderer(ChromaClient& client);
+    ChromaRenderer(IChromaSession& client);
 
     // Render the framebuffer to hardware
     // Returns true if a frame was actually sent
-    bool Render(const Framebuffer& framebuffer);
+    bool Render(const Framebuffer& framebuffer) override;
 
     // Stats
-    int GetFramesSent() const { return m_framesSent; }
-    int GetFramesSkipped() const { return m_framesSkipped; }
+    int GetFramesSent() const override { return m_framesSent; }
+    int GetFramesSkipped() const override { return m_framesSkipped; }
 
 private:
-    ChromaClient& m_client;
+    IChromaSession& m_client;
     Framebuffer m_lastFrame;       // Previous frame for diffing
     bool m_hasLastFrame;           // Is m_lastFrame valid?
     int m_framesSent;

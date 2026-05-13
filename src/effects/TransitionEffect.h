@@ -57,6 +57,11 @@ public:
     int GetPriority() const override { return priority; }
     bool IsFinished() const override { return m_timer.IsFinished(); }
 
+    EffectDescriptor GetDescriptor() const override
+    {
+        return { "TransitionEffect", true, false, false, BlendMode::REPLACE, 0.0f, 0.0f };
+    }
+
 private:
     AnimationTimer m_timer;
 };

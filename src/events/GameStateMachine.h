@@ -11,47 +11,19 @@
 
 #pragma once
 
-#include "EventBus.h"
-#include "../GameState.h"
+#include "IStateMachine.h"
 
-// ============================================================================
-// High-level game states
-// ============================================================================
-enum class HighLevelState
-{
-    IDLE,
-    EXPLORATION,
-    COMBAT,
-    DEAD_EYE,
-    MENU,
-    CUTSCENE
-};
-
-inline const char* HighLevelStateName(HighLevelState state)
-{
-    switch (state)
-    {
-    case HighLevelState::IDLE:        return "IDLE";
-    case HighLevelState::EXPLORATION: return "EXPLORATION";
-    case HighLevelState::COMBAT:      return "COMBAT";
-    case HighLevelState::DEAD_EYE:    return "DEAD_EYE";
-    case HighLevelState::MENU:        return "MENU";
-    case HighLevelState::CUTSCENE:    return "CUTSCENE";
-    default:                          return "UNKNOWN";
-    }
-}
-
-class GameStateMachine
+class GameStateMachine : public IStateMachine
 {
 public:
     GameStateMachine();
 
     // Update state from raw game data — call once per frame
     // Emits events to the EventBus on state transitions
-    void Update(const GameState& state, EventBus& bus);
+    void Update(const GameState& state, IEventBus& bus) override;
 
     // Current high-level state
-    HighLevelState GetCurrentState() const { return m_currentState; }
+    HighLevelState GetCurrentState() const override { return m_currentState; }
 
 private:
     HighLevelState m_currentState;

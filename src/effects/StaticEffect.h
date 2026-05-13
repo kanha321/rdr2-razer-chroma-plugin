@@ -33,5 +33,10 @@ public:
 
     const char* GetName() const override { return "StaticEffect"; }
     int GetPriority() const override { return priority; }
-    bool IsFinished() const override { return false; }  // Persistent
+    bool IsFinished() const override { return false; }
+
+    EffectDescriptor GetDescriptor() const override
+    {
+        return { "StaticEffect", true, false, true, BlendMode::REPLACE, 300.0f, 300.0f };
+    }
 };
